@@ -2,7 +2,7 @@ package constants_test
 
 import (
 	"fmt"
-	"path/filepath"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -18,9 +18,9 @@ func Test_GetDefaultConfigPath(t *testing.T) {
 		mock func() (string, error)
 	}{
 		"os.UserConfigDir success": {
-			want: filepath.Join("def", "abc", constants.DefaultAppFolder),
+			want: "abc/def" + string(os.PathSeparator) + constants.DefaultAppFolder,
 			mock: func() (string, error) {
-				return filepath.Join("def", "abc"), nil
+				return "abc/def", nil
 			},
 		},
 		"os.UserConfigDir error": {
@@ -55,9 +55,9 @@ func Test_GetDefaultCachePath(t *testing.T) {
 		mock func() (string, error)
 	}{
 		"os.UserCacheDir success": {
-			want: filepath.Join("def", "abc", constants.DefaultAppFolder),
+			want: "def/abc" + string(os.PathSeparator) + constants.DefaultAppFolder,
 			mock: func() (string, error) {
-				return filepath.Join("def", "abc"), nil
+				return "def/abc", nil
 			},
 		},
 		"os.UserCacheDir error": {
