@@ -1,0 +1,14 @@
+os:
+    family: linux
+    distro: ""
+    version: ""
+    edition: ""
+src:
+    name: test
+    version: v1.1.1
+trigger: install
+timezone: PST
+lang: en_ZA
+bios:
+    vendor: AMI
+    version: F.03

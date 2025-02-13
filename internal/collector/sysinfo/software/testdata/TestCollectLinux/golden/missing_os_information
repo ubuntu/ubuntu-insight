@@ -1,0 +1,14 @@
+os:
+    family: linux
+    distro: ""
+    version: ""
+    edition: ""
+src:
+    name: test souce
+    version: v4.3.2
+trigger: manual
+timezone: CEN
+lang: fr_FR
+bios:
+    vendor: AMI
+    version: F.03

@@ -1,0 +1,14 @@
+os:
+    family: linux
+    distro: Ubuntu
+    version: "24.04"
+    edition: ""
+src:
+    name: src
+    version: v1.6.4
+trigger: regular
+timezone: JST
+lang: ja
+bios:
+    vendor: ""
+    version: ""

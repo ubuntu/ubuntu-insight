@@ -1,0 +1,14 @@
+os:
+    family: linux
+    distro: Ubuntu
+    version: "24.04"
+    edition: ""
+src:
+    name: test
+    version: v1.7.10
+trigger: regular
+timezone: EST
+lang: ""
+bios:
+    vendor: AMI
+    version: F.03
