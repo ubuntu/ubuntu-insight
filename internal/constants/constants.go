@@ -11,7 +11,8 @@ import (
 
 var (
 	// Version is the version of the application.
-	Version = "Dev"
+	Version       = "Dev"
+	SchemaVersion = "v0.0.1"
 )
 
 const (

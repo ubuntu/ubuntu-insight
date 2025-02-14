@@ -8,6 +8,7 @@ import (
 
 	"github.com/ubuntu/ubuntu-insights/internal/collector/sysinfo"
 	"github.com/ubuntu/ubuntu-insights/internal/collector/sysinfo/software"
+	"github.com/ubuntu/ubuntu-insights/internal/constants"
 )
 
 // Report contains all the info for a report.
@@ -20,6 +21,10 @@ type Report struct {
 }
 
 type Collector struct {
+	period  uint
+	app     string
+	appdata string
+
 	sysinfo      sysinfo.CollectorT[sysinfo.Info]
 	timeProvider func() time.Time
 	log          *slog.Logger
@@ -29,14 +34,22 @@ type Collector struct {
 type Options func(*options)
 
 type options struct {
+	period  uint
+	app     string
+	appdata string
+
 	sysinfo      sysinfo.CollectorT[sysinfo.Info]
 	timeProvider func() time.Time
 	log          *slog.Logger
 }
 
 // New returns a new SysInfo.
-func New(source software.Source, tipe string, args ...Options) Collector {
+func New(source software.Source, tipe string, period uint, app, appdata string, args ...Options) Collector {
 	opts := &options{
+		period:  period,
+		app:     app,
+		appdata: appdata,
+
 		sysinfo:      sysinfo.New(source, tipe),
 		timeProvider: func() time.Time { return time.Now() },
 		log:          slog.Default(),
@@ -47,12 +60,17 @@ func New(source software.Source, tipe string, args ...Options) Collector {
 	}
 
 	return Collector{
-		sysinfo: opts.sysinfo,
-		log:     opts.log,
+		period:  opts.period,
+		app:     opts.app,
+		appdata: opts.appdata,
+
+		sysinfo:      opts.sysinfo,
+		timeProvider: opts.timeProvider,
+		log:          opts.log,
 	}
 }
 
-func (s Collector) Collect(period uint, app, appdata string) Report {
+func (s Collector) Collect() Report {
 	t := uint(s.timeProvider().Unix())
 
 	common, err := s.sysinfo.Collect()
@@ -61,10 +79,10 @@ func (s Collector) Collect(period uint, app, appdata string) Report {
 	}
 
 	return Report{
-		App:       app,
-		Timestamp: t - t%period,
-		Version:   "v0.0.1",
+		App:       s.app,
+		Timestamp: t - t%s.period,
+		Version:   constants.SchemaVersion,
 		Common:    common,
-		Specific:  appdata,
+		Specific:  s.appdata,
 	}
 }
