@@ -47,7 +47,7 @@ var usedProductFields = map[string]struct{}{
 
 // collectProduct uses Win32_ComputerSystem to find information about the system.
 func (s Collector) collectProduct() (product, error) {
-	products, err := cmdutils.RunWMI(s.platform.productCmd, usedProductFields, s.log)
+	products, err := cmdutils.RunListFmt(s.platform.productCmd, usedProductFields, s.log)
 	if err != nil {
 		return product{}, err
 	}
@@ -71,7 +71,7 @@ var usedCPUFields = map[string]struct{}{
 
 // collectCPU uses Win32_Processor to collect information about the CPUs.
 func (s Collector) collectCPU() (info cpu, err error) {
-	cpus, err := cmdutils.RunWMI(s.platform.cpuCmd, usedCPUFields, s.log)
+	cpus, err := cmdutils.RunListFmt(s.platform.cpuCmd, usedCPUFields, s.log)
 	if err != nil {
 		return cpu{}, err
 	}
@@ -113,7 +113,7 @@ var usedGPUFields = map[string]struct{}{
 
 // collectGPUs uses Win32_VideoController to collect information about the GPUs.
 func (s Collector) collectGPUs() (info []gpu, err error) {
-	gpus, err := cmdutils.RunWMI(s.platform.gpuCmd, usedGPUFields, s.log)
+	gpus, err := cmdutils.RunListFmt(s.platform.gpuCmd, usedGPUFields, s.log)
 	if err != nil {
 		return []gpu{}, err
 	}
@@ -140,7 +140,7 @@ var usedMemoryFields = map[string]struct{}{
 
 // collectMemory uses Win32_ComputerSystem to collect information about RAM.
 func (s Collector) collectMemory() (mem memory, err error) {
-	oses, err := cmdutils.RunWMI(s.platform.memoryCmd, usedMemoryFields, s.log)
+	oses, err := cmdutils.RunListFmt(s.platform.memoryCmd, usedMemoryFields, s.log)
 	if err != nil {
 		return memory{}, err
 	}
@@ -191,7 +191,7 @@ func (s Collector) collectDisks() (blks []disk, err error) {
 		return v
 	}
 
-	disks, err := cmdutils.RunWMI(s.platform.diskCmd, usedDiskFields, s.log)
+	disks, err := cmdutils.RunListFmt(s.platform.diskCmd, usedDiskFields, s.log)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func (s Collector) collectDisks() (blks []disk, err error) {
 		blks = append(blks, c)
 	}
 
-	parts, err := cmdutils.RunWMI(s.platform.partitionCmd, usedPartitionFields, s.log)
+	parts, err := cmdutils.RunListFmt(s.platform.partitionCmd, usedPartitionFields, s.log)
 	if err != nil {
 		s.log.Warn("can't get partitions", "error", err)
 		return blks, nil
@@ -283,7 +283,7 @@ var usedScreenSizeFields = map[string]struct{}{
 
 // collectScreens uses Win32_DesktopMonitor to collect information about screens.
 func (s Collector) collectScreens() (screens []screen, err error) {
-	monitors, err := cmdutils.RunWMI(s.platform.screenResCmd, usedScreenResFields, s.log)
+	monitors, err := cmdutils.RunListFmt(s.platform.screenResCmd, usedScreenResFields, s.log)
 	if err != nil {
 		return nil, err
 	}
@@ -297,7 +297,7 @@ func (s Collector) collectScreens() (screens []screen, err error) {
 		})
 	}
 
-	monitors, err = cmdutils.RunWMI(s.platform.screenSizeCmd, usedScreenSizeFields, s.log)
+	monitors, err = cmdutils.RunListFmt(s.platform.screenSizeCmd, usedScreenSizeFields, s.log)
 	if err != nil {
 		s.log.Warn("physical screen size could not be determined", "error", err)
 		return screens, nil
